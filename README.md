@@ -8,12 +8,14 @@ The idea behind a tokenizer is to **convert human-readable text into tokens** (i
 
 ### **1️⃣ Encoding Phase** (Text ➡️ Tokens)
 In this implementation, I started turning a raw string of text, the first chapter of Proverbs in Portuguese, into a raw bytes UTF-8 list:
+
 text = 'Provérbios 1 Propósito e tema 1- Provérbios de Salomão, filho de Davi, rei de Israel. 2- Eles ajudarão a adquirir a sabedoria e a instrução; a compreender as palavras que dão entendimento;'
 tokens = text.encode(encoding='UTF-8', errors='strict')
 print(text, "\n")
 print(list(tokens))
 
 Then, I implemented the merge, findig the pairs that occours the most and creating a new token, exchanging it in the main token list. The merge has to be stored, for further 'unmerging' at the decoding phase.
+
 def get_stats(ids):
     pair_counts = {}
     
@@ -62,6 +64,7 @@ With that, the encoding phase is finished. The string: "Provérbios de Salomão,
 
 ### **2️⃣ Decoding Phase** (Tokens ➡️ Text)
 Now, implementing the decoding process, basically inverting the encoding
+
 def decode(tokens, merge_history):
     for new_token, pair in reversed(merge_history):
         decoded_tokens = []
