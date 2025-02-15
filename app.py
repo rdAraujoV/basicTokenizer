@@ -2,6 +2,36 @@ text = 'Provérbios 1 Propósito e tema 1- Provérbios de Salomão, filho de Dav
 tokens = list(text.encode(encoding='UTF-8', errors='strict'))
 tokenizer_vocab = {byte: chr(byte) for byte in sorted(set(tokens))}
 
+multibyte_tokens = {}
+current_token_id = max(tokens) + 1  # Start after existing token IDs
+
+i = 0
+new_tokens = []
+while i < len(tokens):
+    if tokens[i] >= 0xC0:  # UTF-8 multibyte character start
+        char_bytes = [tokens[i]]
+        i += 1
+        while i < len(tokens) and (tokens[i] >= 0x80 and tokens[i] <= 0xBF):  # Continuation bytes
+            char_bytes.append(tokens[i])
+            i += 1
+        try:
+            char = bytes(char_bytes).decode('utf-8')  # Decode full character
+        except UnicodeDecodeError:
+            print(f"Skipping invalid UTF-8 sequence: {char_bytes}")
+            continue
+        
+        if char not in multibyte_tokens:
+            multibyte_tokens[char] = current_token_id
+            tokenizer_vocab[current_token_id] = char
+            current_token_id += 1
+        
+        new_tokens.append(multibyte_tokens[char])
+    else:
+        new_tokens.append(tokens[i])
+        i += 1
+
+tokens = new_tokens
+
 def get_stats(ids):
     pair_counts = {}
     
@@ -58,7 +88,7 @@ def decode(tokens, merge_history):
                 decoded_tokens.extend(pair)
             else:
                 decoded_tokens.append(tokens[i])
-            i += 1
+            i += 5
         tokens = decoded_tokens
         
     return bytes(tokens).decode('UTF-8')

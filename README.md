@@ -1,19 +1,65 @@
-# Basic BPE Tokenizer  
+Basic BPE Tokenizer
 
-This project is a **simple tokenizer** based on **Byte Pair Encoding (BPE)**, inspired by Andrej Karpathy’s videos, implemented in **raw Python**.
+📌 Overview
 
-The idea behind a tokenizer is to **convert human-readable text into tokens** (integers) to make it **machine-readable**.
-- BPE is widely used in NLP (e.g., GPT models) to efficiently represent words as subword units.  
-- This implementation **encodes** and **decodes** text using BPE, demonstrating how frequent byte pairs are merged into new tokens.
+This project is a Byte Pair Encoding (BPE) Tokenizer, inspired by Andrej Karpathy’s NLP videos, implemented in pure Python.
 
-The first version works well, but when I implemented the visualizer, where I could see what each token means after merge, ponctuation and accent became a issue. Since UTF-8 had more than one byte for those chars, my code couldn't handle it. So I had two options:
-1.  Use a larger string, and map all the chars, creating a new vocabulary, exchanging the use of UTF-8. This would be really efficient and optimized for Portuguese language, but it would limit the tokenizer based on the training string.
+A tokenizer is a crucial component in Natural Language Processing (NLP) that converts human-readable text into machine-readable tokens (integers). BPE is widely used in state-of-the-art NLP models (e.g., GPT, BERT) to create efficient subword representations.
 
-2. Create special treatment for accents and punctuations, treating UTF-8.
+🔍 Features
 
-For the second version of the code, I decided to implement the first option, since the tokenizer is specific for Portuguese language.
+Byte Pair Encoding (BPE) Tokenization for efficient text segmentation.
 
+Custom handling of UTF-8 multibyte characters (accents, punctuation, special symbols).
 
-📖 References
-Byte Pair Encoding (BPE): [Paper](https://arxiv.org/abs/1508.07909)
-Andrej Karpathy’s NLP videos: [YouTube](https://www.youtube.com/@AndrejKarpathy)
+Encoding & Decoding for reversible text processing.
+
+Visualization support to see token mappings.
+
+🛠️ Implementation Details
+
+1️⃣ Tokenization Process
+
+Preprocessing: Convert text into UTF-8 byte representations.
+
+Multibyte Character Merging:
+
+Since UTF-8 encodes some characters using multiple bytes (e.g., é, ã, ç), this phase pre-emptively merges them into single tokens.
+
+Byte Pair Encoding (BPE) Merging:
+
+Identify the most frequent adjacent byte pairs.
+
+Merge them into a new token.
+
+Repeat until a stopping criterion is met (e.g., frequency threshold).
+
+Final Tokenization Output: A list of token IDs representing the input text.
+
+2️⃣ Decoding Process
+
+Reverses the encoding by mapping token IDs back to their original characters.
+
+🚀 Improvements & Fixes
+
+🔹 Handling UTF-8 Multibyte Characters
+
+The first version of this tokenizer struggled with accents and punctuation because UTF-8 represents some characters using multiple bytes. This caused incorrect token merges.
+
+✅ Solution: Implemented a pre-merge phase to detect and merge multibyte characters before applying BPE, ensuring correct tokenization for languages like Portuguese.
+
+🧠 References & Learning Resources
+
+Byte Pair Encoding (BPE) Paper: Sennrich et al. (2015)
+
+Andrej Karpathy’s NLP Videos: YouTube
+
+Hugging Face Tokenizers: GitHub
+
+📌 Future Improvements
+
+Optimize merging strategy to further improve efficiency.
+
+Implement vocabulary size control for dynamic tokenization.
+
+Add subword sampling for better generalization.
