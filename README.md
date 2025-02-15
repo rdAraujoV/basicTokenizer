@@ -50,11 +50,11 @@ The first version of this tokenizer struggled with accents and punctuation becau
 
 🧠 References & Learning Resources
 
-Byte Pair Encoding (BPE) Paper: Sennrich et al. (2015)
+Byte Pair Encoding (BPE) Paper: https://arxiv.org/abs/1508.07909
 
-Andrej Karpathy’s NLP Videos: YouTube
+Andrej Karpathy’s NLP Videos: https://www.youtube.com/@AndrejKarpathyYouTube
 
-Hugging Face Tokenizers: GitHub
+Hugging Face Tokenizers: https://github.com/huggingfaceGitHub
 
 📌 Future Improvements
 
