@@ -23,6 +23,7 @@ With that, the 124 tokens will be stored in the vocab file.
 - First, we map all the common token pairs on the data.
 - Now, we need to merge those pairs to become a new token.
   - I'll do a fine-tunning merge. Starting with the pairs that starts with a whitespace (currently refers to the token: 2). So we can have pairs that indicates a start of a word.
+  - Then, merging the most common pairs.
 # View implementation (inferance)
 - The file `view.py` give a easier way to vizualize the tokenization. REally helpfull for the development itself too.
 # The vocab file
