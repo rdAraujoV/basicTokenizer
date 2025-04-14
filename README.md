@@ -19,6 +19,9 @@ The idea is to create a simple tokenizer for Portuguese Language.
   - **Symbols**: `°` (degree), `²` (superscript two), `´` (acute accent), `º` (masculine ordinal).
 
 With that, the 124 tokens will be stored in the vocab file.
-
+# Second step, BPE pair merging
+- First, we map all the common token pairs on the data.
+- Now, we need to merge those pairs to become a new token.
+  - I'll do a fine-tunning merge. Starting with the pairs that starts with a whitespace (currently refers to the token: 2). So we can have pairs that indicates a start of a word.
 # The vocab file
 It’s where every token is stored.
