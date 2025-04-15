@@ -1,30 +1,65 @@
-The idea is to create a simple tokenizer for Portuguese Language.
+Basic BPE Tokenizer
 
-# First step, create a char-level tokenizer
-- The data is a bunch of Wikipedia pages in Portuguese.
-- It’s encoded in bytes with UTF-8.
-  - This causes problems with multi-byte characters; some chars, like `é`, are encoded as multiple bytes.
-- Instead of single-byte tokenization for the vocab, I’ll use individual Unicode tokenization.
-- This way, I can visualize tokens I won’t need, such as `↑`, and clean the dataset for better tokenization.
-- First step concluded, achieving a vocab size of 124.
-  ### Analysis of the Vocabulary
-  #### Character Categories:
-  - **Whitespace**: `\t` (tab), `\n` (newline), ` ` (space).
-  - **Punctuation**: `!`, `"`, `#`, `$`, `%`, `&`, `'`, `(`, `)`, `*`, `,`, `-`, `.`, `/`, `:`, `;`, `?`, `@`, `[`, `]`, `` ` ``, `–`, `—`, `‘`, `’`, `“`, `”`.
-  - **Digits**: `0–9`.
-  - **Letters**:
-    - Uppercase ASCII: `A–Z`.
-    - Lowercase ASCII: `a–z`.
-    - Accented/special letters: `ª`, `À`, `Á`, `Ã`, `Å`, `Æ`, `É`, `Í`, `Ö`, `Ú`, `à`, `á`, `â`, `ã`, `ä`, `å`, `ç`, `é`, `ê`, `í`, `ñ`, `ó`, `ô`, `õ`, `ö`, `ú`, `ü`, `ÿ`.
-  - **Symbols**: `°` (degree), `²` (superscript two), `´` (acute accent), `º` (masculine ordinal).
+## Overview
 
-With that, the 124 tokens will be stored in the vocab file.
-# Second step, BPE pair merging
-- First, we map all the common token pairs on the data.
-- Now, we need to merge those pairs to become a new token.
-  - I'll do a fine-tunning merge. Starting with the pairs that starts with a whitespace (currently refers to the token: 2). So we can have pairs that indicates a start of a word.
-  - Then, merging the most common pairs.
-# View implementation (inferance)
-- The file `view.py` give a easier way to vizualize the tokenization. REally helpfull for the development itself too.
-# The vocab file
-It’s where every token is stored.
+This project is a Byte Pair Encoding (BPE) Tokenizer, inspired by Andrej Karpathy’s NLP videos, implemented in pure Python.
+
+A tokenizer is a crucial component in Natural Language Processing (NLP) that converts human-readable text into machine-readable tokens (integers). BPE is widely used in state-of-the-art NLP models (e.g., GPT, BERT) to create efficient subword representations.
+
+## Features
+
+Byte Pair Encoding (BPE) Tokenization for efficient text segmentation.
+
+Custom handling of UTF-8 multibyte characters (accents, punctuation, special symbols).
+
+Encoding & Decoding for reversible text processing.
+
+Visualization support to see token mappings.
+
+## Implementation Details
+
+### Tokenization Process
+
+Preprocessing: Convert text into UTF-8 byte representations.
+
+Multibyte Character Merging:
+
+Since UTF-8 encodes some characters using multiple bytes (e.g., é, ã, ç), this phase pre-emptively merges them into single tokens.
+
+Byte Pair Encoding (BPE) Merging:
+
+Identify the most frequent adjacent byte pairs.
+
+Merge them into a new token.
+
+Repeat until a stopping criterion is met (e.g., frequency threshold).
+
+Final Tokenization Output: A list of token IDs representing the input text.
+
+### Decoding Process
+
+Reverses the encoding by mapping token IDs back to their original characters.
+
+### Improvements & Fixes
+
+- Handling UTF-8 Multibyte Characters
+
+The first version of this tokenizer struggled with accents and punctuation because UTF-8 represents some characters using multiple bytes. This caused incorrect token merges.
+
+ Solution: Implemented a pre-merge phase to detect and merge multibyte characters before applying BPE, ensuring correct tokenization for languages like Portuguese.
+
+### References & Learning Resources
+
+Byte Pair Encoding (BPE) Paper: https://arxiv.org/abs/1508.07909
+
+Andrej Karpathy’s NLP Videos: https://www.youtube.com/@AndrejKarpathyYouTube
+
+Hugging Face Tokenizers: https://github.com/huggingfaceGitHub
+
+## Future Improvements
+
+Optimize merging strategy to further improve efficiency.
+
+Implement vocabulary size control for dynamic tokenization.
+
+Add subword sampling for better generalization.
