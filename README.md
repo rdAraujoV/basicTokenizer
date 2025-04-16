@@ -1,12 +1,9 @@
 # Basic BPE Tokenizer
 
-A simple yet effective Byte Pair Encoding (BPE) tokenizer implemented in Python. Designed for educational purposes and experimental tokenization of text data.
-
 ---
 
 ## 📊 Tokenizer Comparison
 
-Visual comparison between GPT-4 tokenization and my custom `basicTokenizer`:
 
 ![Tokenizer Comparison](gitFiles/img.png)
 
@@ -16,13 +13,6 @@ Visual comparison between GPT-4 tokenization and my custom `basicTokenizer`:
 
 ## 🔧 Features
 
-- Custom BPE tokenizer logic (no external libraries)
-- Configurable number of merge steps
-- Merge constraints (punctuation, whitespace, digit-letter boundaries, etc.)
-- Vocabulary and merge history exportable to JSON
-- Visualization script included
-
----
 
 ## 📝 Notes
 
@@ -41,6 +31,3 @@ Visual comparison between GPT-4 tokenization and my custom `basicTokenizer`:
 
 ## 📚 References & Learning Resources
 
-- [Byte Pair Encoding (BPE) Paper](https://arxiv.org/abs/1508.07909)
-- [Andrej Karpathy’s NLP YouTube Series](https://www.youtube.com/@AndrejKarpathyYouTube)
-- [Hugging Face Tokenizers GitHub](https://github.com/huggingface/tokenizers)
