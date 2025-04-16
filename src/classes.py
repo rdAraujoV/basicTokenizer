@@ -3,7 +3,6 @@ from string import punctuation
 import unicodedata
 
 class DatasetLoader:
-    # This class loads, cleans and saves the training dataset
     
     def __init__(self, path):
         self.path = path
@@ -22,7 +21,6 @@ class DatasetLoader:
             file.write(text)
 
 class BPETokenizer:
-    # Merging rules and merging itself
     
     def __init__(self, text, num_merges=10):
         self.text = text
@@ -30,23 +28,25 @@ class BPETokenizer:
         self.tokens = list(text)
         self.vocab = {}
         self.merge_history = []
+        self.max_id = 0
     
     def build_initial_vocab(self):
         tokens = list(self.text)
         self.tokens = tokens
         self.vocab = {str(i): char for i, char in enumerate(sorted(set(tokens)))}
+        self.max_id = len(self.vocab) - 1
     
     def apply_whitespace_merges(self):
-        merged_pairs = set()
-        for i in range(len(self.tokens) - 1):
-            if self.tokens[i] == ' ':
-                merged_token = self.tokens[i] + self.tokens[i+1]
-                merged_pairs.add(merged_token)
-                
-        max_id = max(int(k) for k in self.vocab.keys())
-        for merged_token in sorted(merged_pairs):
-            max_id += 1
-            self.vocab[str(max_id)] = merged_token
+        merged_tokens = []
+        i = 0
+        while i < len(self.tokens):
+            if self.tokens[i] == ' ' and i + 1 < len(self.tokens):
+                merged_tokens.append(self.tokens[i] + self.tokens[i + 1])
+                i += 2
+            else:
+                merged_tokens.append(self.tokens[i])
+                i += 1
+        self.tokens = merged_tokens
             
     def get_stats(self, tokens):
         pair_counts = {}
@@ -124,8 +124,8 @@ class BPETokenizer:
             most_common = max(stats.items(), key=lambda x: x[1])[0] 
             new_token = most_common[0] + most_common[1]
             
-            max_id = max(int(k) for k in self.vocab.keys())
-            self.vocab[str(max_id + 1)] = new_token
+            self.max_id += 1
+            self.vocab[str(self.max_id)] = new_token
             
             tokens = self.merge_pair(tokens, most_common)
             merges.append(most_common)
