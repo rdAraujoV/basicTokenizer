@@ -10,6 +10,3 @@ __pycache__/
 *.log
 *.tmp
 tempCodeRunnerFile.py
-
-# Custom folders
-/gitFiles/
