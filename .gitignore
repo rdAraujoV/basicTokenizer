@@ -1,0 +1,15 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# VS Code settings
+.vscode/
+
+# Temp files
+*.log
+*.tmp
+tempCodeRunnerFile.py
+
+# Custom folders
+/gitFiles/
