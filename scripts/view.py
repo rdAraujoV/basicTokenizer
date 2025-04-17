@@ -1,6 +1,6 @@
 import json
 
-path = r"C:\Users\rodri\OneDrive\Documents\Coding Projects\tokenizer\basicTokenizer\vocab.json"
+path = r"C:\Users\rodri\OneDrive\Documents\Coding Projects\tokenizer\basicTokenizer\datasets\vocab.json"
 
 with open(path, "r", encoding="utf-8") as file:
     vocab = json.load(file)

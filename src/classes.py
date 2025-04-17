@@ -78,24 +78,24 @@ class BPETokenizer:
             return False
 
         # Newline merges
-        if a == '\n' or b == '\n':
+        if '\n' in a or '\n' in b:
             return False
 
         # Digit + letter
-        if (a.isdigit() and b.isalpha()) or (a.isalpha() and b.isdigit()):
+        if (a[-1].isdigit() and b[0].isalpha()) or (a[-1].isalpha() and b[0].isdigit()):
             return False
         
         # Whitespace between letters or digits
-        if a.isspace() and b.isalnum():
+        if a[-1].isalnum() and b[0].isspace():
             return False
-        if a.isalnum() and b.isspace():
+        if a[-1].isspace() and b[0].isalnum():
             return False    
         
         # letter or digit + whitespace (word end)
-        if (a.isalpha() and b.isspace()) or (a.isdigit() and b.isspace()):
+        if a.endswith(" ") or b.startswith(" "):
             return False
-        else:
-            return True
+        
+        return True
         
     def merge_pair(self, tokens, pair):
         merged = []
