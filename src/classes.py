@@ -1,4 +1,5 @@
 import json
+import re
 from string import punctuation
 import unicodedata
 
@@ -10,9 +11,46 @@ class DatasetLoader:
 
     def _load_text(self):
         with open(self.path, "r", encoding="utf-8") as file:
-            text = file.read()
-        return text.replace('\u200b', '')
-    
+            return file.read()
+
+    def clean_text(self):
+        text = self.text
+
+        # 1) Normalize to NFC so accents are single code‑points (keeps é, ñ, etc.)
+        text = unicodedata.normalize('NFC', text)
+
+        # 2) Drop control chars (except newline/tab)
+        text = re.sub(r'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]', '', text)
+
+        # 3) Whitelist Latin letters, combining marks, digits, punctuation, whitespace
+        def keep_char(c):
+            cat = unicodedata.category(c)
+            # Letters: must be Latin
+            if cat.startswith('L'):
+                # e.g. 'LATIN SMALL LETTER E', 'GREEK …' will be rejected
+                return 'LATIN' in unicodedata.name(c, '')
+            # Combining accents/marks
+            if cat.startswith('M'):
+                return True
+            # Numbers
+            if cat.startswith('N'):
+                return True
+            # Punctuation
+            if cat.startswith('P'):
+                return True
+            # Whitespace (spaces, tabs, newlines)
+            if c.isspace():
+                return True
+            return False
+
+        cleaned = ''.join(c for c in text if keep_char(c))
+
+        # 4) Collapse multiple spaces/newlines
+        cleaned = re.sub(r'[ \t]+', ' ', cleaned)
+        cleaned = re.sub(r'\n{3,}', '\n\n', cleaned)
+
+        self.text = cleaned
+
     def get_text(self):
         return self.text
     
